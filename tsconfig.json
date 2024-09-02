@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2015",
+    "lib": [
+      "dom",
+      "es6",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "noUnusedLocals": true, 
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true, 
+    "experimentalDecorators": true, 
+  },
+  "exclude": [ "node_modules" ]
+}
