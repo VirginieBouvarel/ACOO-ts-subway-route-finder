@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "TS Code examples for HEAD FIRST - Object Oriented Design and Analysis",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server",
-    "build": "webpack --config webpack.config.prod.js"
+    "start": "tsx src/app.ts"
   },
   "author": "Virginie Bouvarel",
   "license": "ISC",
@@ -15,6 +15,8 @@
     "clean-webpack-plugin": "^4.0.0",
     "lite-server": "^2.5.4",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.0",
     "typescript": "^5.5.4",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
