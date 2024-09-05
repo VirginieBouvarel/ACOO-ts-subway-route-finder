@@ -1,0 +1,19 @@
+Rapides d'Ajax
+Allée de Non duplication
+Station Météo
+Les planches à gogo
+Théâtre Tête la première
+Rocade XHTML
+Cercle Infini
+
+Ligne Meyer
+Allée de Non duplication
+Théâtre Tête la première
+
+Ligne Wirfs-Brock
+Station Météo
+Rocade XHTML
+
+Ligne Rumbaugh
+Théâtre Tête la première
+Cercle Infini
