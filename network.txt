@@ -5,6 +5,7 @@ Les planches à gogo
 Théâtre Tête la première
 Rocade XHTML
 Cercle Infini
+Foo
 
 Ligne Meyer
 Allée de Non duplication
@@ -17,3 +18,13 @@ Rocade XHTML
 Ligne Rumbaugh
 Théâtre Tête la première
 Cercle Infini
+
+Ligne Test
+Rapides d'Ajax
+Allée de Non duplication
+Station Météo
+Les planches à gogo
+Théâtre Tête la première
+Rocade XHTML
+Cercle Infini
+Rapides d'Ajax

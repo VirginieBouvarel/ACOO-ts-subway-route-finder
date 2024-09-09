@@ -7,6 +7,7 @@ export class LoadTester {
 
       const objectVille = await loader.loadFromFile('./network.txt');
 
+      console.log('Usage: Test métro - chargement du réseau');
       console.log('Test des stations...');
       if (
         objectVille.hasStation("Allée de Non duplication") &&
