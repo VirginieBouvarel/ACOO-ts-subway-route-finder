@@ -4,7 +4,7 @@ import { Station } from "./Station";
 export class Subway {
   private stations: Station[];
   private connections: Connection[];
-  private network: Map<Station, Station[]>;
+  private network: Map<string, Station[]>;
 
   constructor() {
     this.stations = [];
@@ -82,16 +82,16 @@ export class Subway {
    * * en lui attribuant la liste contenant station 2
    */
   private addToNetwork(station1: Station, station2: Station) :void {
-    if(this.network.has(station1)) {
-      const connectingStations = this.network.get(station1) as Station[];
+    if(this.network.has(station1.getName())) {
+      const connectingStations = this.network.get(station1.getName()) as Station[];
       if (!connectingStations.includes(station2)) {
         connectingStations!.push(station2);
-        this.network.set(station1, connectingStations);
+        this.network.set(station1.getName(), connectingStations);
       }
     } else {
       const connectingStations: Station[] = [];
       connectingStations.push(station2);
-      this.network.set(station1, connectingStations);
+      this.network.set(station1.getName(), connectingStations);
     }
   }
 
@@ -108,9 +108,9 @@ export class Subway {
     const end = new Station(endStationName);
     const route: Connection[] = [];
     const reachableStations: Station[] = [];
-    const previousStations: Map<Station, Station> = new Map();
+    const previousStations: Map<string, Station> = new Map();
 
-    const neighbors = this.network.get(start) || [];
+    const neighbors = this.network.get(start.getName()) || [];
 
     for (const station of neighbors) {
       if (station.equals(end)) {
@@ -118,7 +118,7 @@ export class Subway {
         return route;
       } else {
         reachableStations.push(station);
-        previousStations.set(station, start);
+        previousStations.set(station.getName(), start);
       }
     }
 
@@ -130,16 +130,16 @@ export class Subway {
       for (const station of nextStations) {
         reachableStations.push(station);
         currentStation = station;
-        const currentNeighbors = this.network.get(currentStation) || [];
+        const currentNeighbors = this.network.get(currentStation.getName()) || [];
         for (const neighbor of currentNeighbors) {
           if (neighbor.equals(end)) {
             reachableStations.push(neighbor);
-            previousStations.set(neighbor, currentStation);
+            previousStations.set(neighbor.getName(), currentStation);
             break searchLoop;
-          } else if (!reachableStations.includes(neighbor)) {
+          } else if (reachableStations.filter(station => station.equals(neighbor)).length === 0) {
             reachableStations.push(neighbor);
             tmpNextStations.push(neighbor);
-            previousStations.set(neighbor, currentStation);
+            previousStations.set(neighbor.getName(), currentStation);
           }
         }
       }
@@ -151,7 +151,7 @@ export class Subway {
     let keyStation: Station = end;
 
     while (keepLooping) {
-      const station = previousStations.get(keyStation)!;
+      const station = previousStations.get(keyStation.getName())!;
       route.unshift(this.getConnection(station, keyStation) as Connection);
       if (start.equals(station)) {
         keepLooping = false;

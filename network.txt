@@ -10,14 +10,17 @@ Foo
 Ligne Meyer
 Allée de Non duplication
 Théâtre Tête la première
+Allée de Non duplication
 
 Ligne Wirfs-Brock
 Station Météo
 Rocade XHTML
+Station Météo
 
 Ligne Rumbaugh
 Théâtre Tête la première
 Cercle Infini
+Théâtre Tête la première
 
 Ligne Test
 Rapides d'Ajax

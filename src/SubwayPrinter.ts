@@ -26,7 +26,7 @@ export class SubwayPrinter {
         this.output.write(`Prenez la ${currentLine}, en direction de ${connection.getStation2().getName()}.\n`);
         previousLine = currentLine;
       }
-      this.output.write(`Descendez à ${connection.getStation2().getName()} et passez une bonne journée!\n`);
     }
+    this.output.write(`Descendez à ${connection.getStation2().getName()} et passez une bonne journée!\n`);
   }
 }

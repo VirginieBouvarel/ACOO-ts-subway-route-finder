@@ -5,7 +5,7 @@ import { SubwayTester } from "./tests/SubwayTester";
 // loadTester.main();
 
 const startStation = "Rapides d'Ajax";
-const endStation = "Cercle Infini";
+const endStation = "Les planches à gogo";
 
 const subwayTester = new SubwayTester();
 subwayTester.main([startStation, endStation]);
