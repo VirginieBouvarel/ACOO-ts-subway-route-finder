@@ -4,10 +4,12 @@ import { Station } from "./Station";
 export class Subway {
   private stations: Station[];
   private connections: Connection[];
+  private network: Map<string, Station[]>;
 
   constructor() {
     this.stations = [];
     this.connections = [];
+    this.network = new Map();
   }
 
   addStation(stationName: string): void {
@@ -31,6 +33,9 @@ export class Subway {
 
       this.connections.push(connection);
       this.connections.push(reversedConnection);
+
+      this.addToNetwork(stationOne, stationTwo);
+      this.addToNetwork(stationTwo, stationOne);
     } else {
       throw new Error("Liaison invalide !")
     }
@@ -50,5 +55,110 @@ export class Subway {
       }
     }
     return false;
+  }
+
+  private getConnection(station1: Station, station2: Station): Connection | null {
+    for (let i = 0; i < this.connections.length; i++) {
+      const connection = this.connections[i];
+      const stationOne = connection.getStation1();
+      const stationTwo = connection.getStation2();
+      if (station1.equals(stationOne) && station2.equals(stationTwo)) {
+        return connection;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * On vérifie si la station 1 est présente dans le réseau,
+   * Si Oui, on récupère la liste des stations qui lui sont reliées
+   * * On vérifie si station2 est incluse dans cette liste
+   * * Si ce n'est pas le cas on l'y ajoute,
+   * * Puis on modifie la valeur de station1 dans le réseau 
+   * * en lui passant la nouvelle liste de stations liées incluant station2
+   * Si Non, on crée une liste vide de stations liées
+   * * On y ajoute station2
+   * * Et on crée une entrée dans le réseau pour station1 
+   * * en lui attribuant la liste contenant station 2
+   */
+  private addToNetwork(station1: Station, station2: Station) :void {
+    if(this.network.has(station1.getName())) {
+      const connectingStations = this.network.get(station1.getName()) as Station[];
+      if (!connectingStations.includes(station2)) {
+        connectingStations!.push(station2);
+        this.network.set(station1.getName(), connectingStations);
+      }
+    } else {
+      const connectingStations: Station[] = [];
+      connectingStations.push(station2);
+      this.network.set(station1.getName(), connectingStations);
+    }
+  }
+
+  getDirections(startStationName: string, endStationName: string): Connection[] {
+    if (!this.hasStation(startStationName) || !this.hasStation(endStationName)) {
+      throw new Error("Les stations saisies n'existent pas dans ce métro.");
+    }
+
+    /**
+     * Algorithme de Dijkstra tout prêt 
+     * fourni dans le livre et à inclure tel quel ici
+     */
+    const start = new Station(startStationName);
+    const end = new Station(endStationName);
+    const route: Connection[] = [];
+    const reachableStations: Station[] = [];
+    const previousStations: Map<string, Station> = new Map();
+
+    const neighbors = this.network.get(start.getName()) || [];
+
+    for (const station of neighbors) {
+      if (station.equals(end)) {
+        route.push(this.getConnection(start, end) as Connection);
+        return route;
+      } else {
+        reachableStations.push(station);
+        previousStations.set(station.getName(), start);
+      }
+    }
+
+    let nextStations = [...neighbors];
+    let currentStation: Station = start;
+
+    searchLoop: for (let i = 1; i < this.stations.length; i++) {
+      const tmpNextStations: Station[] = [];
+      for (const station of nextStations) {
+        reachableStations.push(station);
+        currentStation = station;
+        const currentNeighbors = this.network.get(currentStation.getName()) || [];
+        for (const neighbor of currentNeighbors) {
+          if (neighbor.equals(end)) {
+            reachableStations.push(neighbor);
+            previousStations.set(neighbor.getName(), currentStation);
+            break searchLoop;
+          } else if (reachableStations.filter(station => station.equals(neighbor)).length === 0) {
+            reachableStations.push(neighbor);
+            tmpNextStations.push(neighbor);
+            previousStations.set(neighbor.getName(), currentStation);
+          }
+        }
+      }
+      nextStations = tmpNextStations;
+    }
+
+    // Nous avons trouvé le chemin
+    let keepLooping = true;
+    let keyStation: Station = end;
+
+    while (keepLooping) {
+      const station = previousStations.get(keyStation.getName())!;
+      route.unshift(this.getConnection(station, keyStation) as Connection);
+      if (start.equals(station)) {
+        keepLooping = false;
+      }
+      keyStation = station;
+    }
+
+    return route;
   }
 }
